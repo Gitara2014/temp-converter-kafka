@@ -60,8 +60,6 @@ public class FahrenheitConsumer {
             //PERSIST RESULT
             saveResult(record.key(), record.value());
         }
-
-
     }
 
     private void saveResult(String uuid, String tempFahrenheit) {
@@ -73,7 +71,6 @@ public class FahrenheitConsumer {
         temperature.setStatus(EventStatus.SUCCESS);
         Temperature savedTemp = converterService.getTemperatureRepository().save(temperature);
         System.out.println(savedTemp);
-
     }
 
 }

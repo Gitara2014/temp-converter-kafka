@@ -15,11 +15,4 @@ public class CelsiusToFahrenheit {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            System.out.println(CelsiusToFahrenheit.fahrenheit("abc"));
-        } catch (TemperatureConversionException e) {
-            e.printStackTrace();
-        }
-    }
 }

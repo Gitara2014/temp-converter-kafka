@@ -28,7 +28,7 @@ public class ConvertController {
         return tempEvent;
     }
 
-    // curl http://www.localhost:8585/temperature?uuid=0044a43a-ec2c-4549-bf03-bdc78ca6faa7
+    // curl 'http://www.localhost:8585/temperature?uuid=0044a43a-ec2c-4549-bf03-bdc78ca6faa7'
     @GetMapping("/temperature")
     public Temperature convert(@RequestParam("uuid") String uuid) throws Throwable {
         List<Temperature> temperatureList = converterService.getTemperatureRepository()
