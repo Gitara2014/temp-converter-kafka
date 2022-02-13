@@ -35,6 +35,7 @@ public class ConverterService {
         Temperature t = new Temperature(generateUuid(),
                 ZonedDateTime.now(),
                 tempDTO.getTemperature(),
+                null,
                 EventStatus.PENDING);
 
         return temperatureRepository.save(t);
@@ -45,7 +46,7 @@ public class ConverterService {
         requestConversionProducer.send(
                 topic,
                 tempEvent.getUuid().toString(),
-                String.valueOf(tempEvent.getTemperature()));
+                String.valueOf(tempEvent.getTempCelsius()));
 
         //producer.close(); ? When to close/graceful shutdown?
     }

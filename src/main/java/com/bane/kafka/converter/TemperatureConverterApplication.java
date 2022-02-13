@@ -26,10 +26,14 @@ public class TemperatureConverterApplication {
     @Bean
     public CommandLineRunner demo(TemperatureRepository repository) {
         return (args) -> {
-            UUID uuid = UUID.randomUUID();
+            UUID uuid1 = UUID.randomUUID();
+            UUID uuid2 = UUID.randomUUID();
 
             // save a few customers
-            repository.save(new Temperature(uuid, ZonedDateTime.now(), 36.4, EventStatus.PENDING));
+            repository.save(new Temperature(uuid1, ZonedDateTime.now(), 36.4, null, EventStatus.PENDING));
+            repository.save(new Temperature(uuid1, ZonedDateTime.now(), 36.4, 97.52, EventStatus.SUCCESS));
+
+            repository.save(new Temperature(uuid2, ZonedDateTime.now(), 20.3, null, EventStatus.FAILURE));
 
             // fetch all Temps
             log.info("Temps found with findAll():");
@@ -49,7 +53,7 @@ public class TemperatureConverterApplication {
 
             }
 
-            List<Temperature> tempList = repository.findByUuid(uuid);
+            List<Temperature> tempList = repository.findByUuid(uuid1);
             Optional<Temperature> findByUuidOptional = tempList.stream().findAny();
             if (findByUuidOptional.isPresent()) {
                 findByUuidOptional.get();

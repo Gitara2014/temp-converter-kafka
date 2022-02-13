@@ -22,20 +22,21 @@ public class Temperature {
     private UUID uuid;
     @Column(name = "date", nullable = false)
     private ZonedDateTime date;
-    @Column(name = "temperature", nullable = false)
-    private double temperature;
+    @Column(name = "temperature_celsius", nullable = false)
+    private Double tempCelsius;
+    @Column(name = "temperature_fahrenheit")
+    private Double tempFahrenheit;
     @Column(name = "status", nullable = false)
     private EventStatus status;
 
     protected Temperature() {
     }
 
-    public Temperature(UUID uuid, ZonedDateTime date, double temperature, EventStatus status) {
+    public Temperature(UUID uuid, ZonedDateTime date, Double tempCelsius, Double tempFahrenheit, EventStatus status) {
         this.uuid = uuid;
         this.date = date;
-        this.temperature = temperature;
+        this.tempCelsius = tempCelsius;
+        this.tempFahrenheit = tempFahrenheit;
         this.status = status;
     }
-
-
 }
