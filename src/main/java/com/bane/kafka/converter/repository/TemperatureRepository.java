@@ -9,5 +9,4 @@ import java.util.UUID;
 public interface TemperatureRepository extends CrudRepository<Temperature, Long> {
 
     List<Temperature> findByUuid(UUID uuid);
-
 }
