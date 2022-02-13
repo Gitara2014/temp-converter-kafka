@@ -47,16 +47,27 @@ Kowl - A Web UI for Apache Kafka
 
 - https://github.com/cloudhut/kowl
 ```terminal
+RUN KAFKA, RUN KOWL: 
 $ sudo docker-compose up 
 $ sudo docker run --network=host -p 8080:8080 -e KAFKA_BROKERS=localhost:9092 --name kowl quay.io/cloudhut/kowl:master
+$ http://localhost:8080/
+
+RUN APP:
 $ mvn clean package
 $ java -jar tartget/*.jar
 
-$ http://localhost:8080/
+TEST: 
 $ curl -X POST -H "Content-Type: application/json" -d '{"temperature": 37.2, "device": "IOT-WINE-FIELD-SENSOR-ABC123567"}' 'http://www.localhost:8585/temperature'
 
+Response: 
+{"id":5,"uuid":"1219cbe7-be37-4f13-b074-0893b210ce17","date":"2022-02-13T23:52:18.983756179+01:00","tempCelsius":37.2,"tempFahrenheit":null,"status":"PENDING"}
+
+$ curl 'http://www.localhost:8585/temperature?uuid=1219cbe7-be37-4f13-b074-0893b210ce17' -v
+Response:
+{"id":5,"uuid":"1219cbe7-be37-4f13-b074-0893b210ce17","date":"2022-02-13T23:52:18.983756+01:00","tempCelsius":37.2,"tempFahrenheit":98.96000000000001,"status":"SUCCESS"}
 ```
 
+SHUTDOWN: 
 ```terminal
 $ sudo docker-compose down
 $ sudo docker stop kowl && sudo docker rm kowl
