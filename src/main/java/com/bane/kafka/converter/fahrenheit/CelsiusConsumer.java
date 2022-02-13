@@ -1,6 +1,7 @@
 package com.bane.kafka.converter.fahrenheit;
 
 import com.bane.kafka.converter.exception.TemperatureConversionException;
+import com.bane.kafka.converter.util.Topics;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.consumer.*;
 
@@ -9,15 +10,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+
 @Log4j2
 public class CelsiusConsumer {
 
-    public static final String CONVERSIONS_SUCCESSFUL_TOPIC = "conversions_successful";
-    public static final String CONVERSIONS_FAILED_TOPIC = "conversions_failed";
-
-    public static final String COVERT_CELSIUS_TO_FAHRENHEIT = "covert_celsius_to_fahrenheit";
     private final long pollInterval = 10 * 1000;
-
 
     private void consumerWorks() {
         Properties properties = new Properties();
@@ -30,7 +27,7 @@ public class CelsiusConsumer {
 
         Consumer<String, String> kafkaConsumer = new KafkaConsumer<String, String>(properties);
 
-        Collection<String> topics = List.of(COVERT_CELSIUS_TO_FAHRENHEIT);
+        Collection<String> topics = List.of(Topics.COVERT_CELSIUS_TO_FAHRENHEIT);
 
         kafkaConsumer.subscribe(topics);
 
@@ -56,13 +53,13 @@ public class CelsiusConsumer {
                     double fahrenheit = CelsiusToFahrenheit.fahrenheit(record.value());
                     //PUBLISH SUCCESS CONVERSION
                     ConversionProducer conversionProducer = new ConversionProducer();
-                    conversionProducer.sendConversionResult(CONVERSIONS_SUCCESSFUL_TOPIC, record.key(), String.valueOf(fahrenheit));
+                    conversionProducer.sendConversionResult(Topics.CONVERSIONS_SUCCESSFUL_TOPIC, record.key(), String.valueOf(fahrenheit));
 
                 } catch (TemperatureConversionException e) {
                     log.error("Failed to convert: " + record.value());
                     //PUBLISH FAILED CONVERSION
                     ConversionProducer conversionProducer = new ConversionProducer();
-                    conversionProducer.sendConversionResult(CONVERSIONS_FAILED_TOPIC, record.key(), record.value());
+                    conversionProducer.sendConversionResult(Topics.CONVERSIONS_FAILED_TOPIC, record.key(), record.value());
                 }
 
             }

@@ -2,6 +2,7 @@ package com.bane.kafka.converter.entity;
 
 import com.bane.kafka.converter.service.EventStatus;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @ToString
+@Setter
 @Getter
 @Entity
 public class Temperature {

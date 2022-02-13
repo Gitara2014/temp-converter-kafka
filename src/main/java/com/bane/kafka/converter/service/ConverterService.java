@@ -4,6 +4,7 @@ import com.bane.kafka.converter.controller.TempDTO;
 import com.bane.kafka.converter.entity.Temperature;
 import com.bane.kafka.converter.event.RequestConversionProducer;
 import com.bane.kafka.converter.repository.TemperatureRepository;
+import com.bane.kafka.converter.util.Topics;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ import java.util.UUID;
 @Service
 public class ConverterService {
 
-    private final String topic = "covert_celsius_to_fahrenheit";
     private final TemperatureRepository temperatureRepository;
     private final RequestConversionProducer requestConversionProducer;
 
@@ -44,7 +44,7 @@ public class ConverterService {
     public void issueCreateTempEvent(Temperature tempEvent) {
         log.info("Issuing new temperature convert event");
         requestConversionProducer.send(
-                topic,
+                Topics.COVERT_CELSIUS_TO_FAHRENHEIT,
                 tempEvent.getUuid().toString(),
                 String.valueOf(tempEvent.getTempCelsius()));
 
