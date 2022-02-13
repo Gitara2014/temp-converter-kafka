@@ -1,4 +1,4 @@
-package com.bane.kafka.converter;
+package com.bane.kafka.converter.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;

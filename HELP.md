@@ -26,15 +26,46 @@ to SUCCESS or ERROR
 The following guides illustrate how to use some features concretely:
 
 * [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-
-https://spring.io/guides/gs/accessing-data-mongodb/
+* https://stackabuse.com/get-http-post-body-in-spring/
+* 
+MONGO
+- https://spring.io/guides/gs/accessing-data-mongodb/
+- https://www.youtube.com/watch?v=ssj0CGxv60k
 
 JPA and H2
-
-https://spring.io/guides/gs/accessing-data-jpa/#initial
-https://github.com/spring-guides/gs-accessing-data-jpa/blob/main/complete/pom.xml
-http://localhost:8080/h2-console
+- https://spring.io/guides/gs/accessing-data-jpa/#initial
+- https://github.com/spring-guides/gs-accessing-data-jpa/blob/main/complete/pom.xml
+- http://localhost:8080/h2-console
 
 KAFKA
+- org.apache.kafka.clients.requestConversionProducer.KafkaProducer
+- https://kafka.apache.org/30/javadoc/org/apache/kafka/clients/requestConversionProducer/KafkaProducer.html
+- https://www.confluent.io/wp-content/uploads/confluent-kafka-definitive-guide-complete.pdf
+- https://www.youtube.com/watch?v=jY02MB-sz8I
 
-https://www.youtube.com/watch?v=jY02MB-sz8I
+Kowl - A Web UI for Apache Kafka
+
+- https://github.com/cloudhut/kowl
+```terminal
+$ sudo docker-compose up 
+$ sudo docker run --network=host -p 8080:8080 -e KAFKA_BROKERS=localhost:9092 --name kowl quay.io/cloudhut/kowl:master
+$ mvn clean package
+$ java -jar tartget/*.jar
+
+$ http://localhost:8080/
+$ curl -X POST -H "Content-Type: application/json" -d '{"temperature": 37.2, "device": "IOT-WINE-FIELD-SENSOR-ABC123567"}' 'http://www.localhost:8585/temperature'
+
+```
+
+```terminal
+$ sudo docker-compose down
+$ sudo docker stop kowl && sudo docker rm kowl
+
+```
+
+Log: 
+- kafka        | [2022-02-08 00:07:47,218] INFO [KafkaServer id=1001] started (kafka.server.KafkaServer)
+
+
+JAVA
+- https://turreta.com/2017/06/26/java-3-ways-to-implement-a-generic-interface/
