@@ -9,7 +9,6 @@ import org.apache.kafka.clients.consumer.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.UUID;
 @Component
 public class FahrenheitConsumer {
 
+    private final KafkaConsumer<String, String> consumer;
     private final ConverterService converterService;
 
     public static final String FAHRENHEIT_CONSUMER_GROUP = "fahrenheit_consumer_group";
@@ -27,10 +27,6 @@ public class FahrenheitConsumer {
 
     public FahrenheitConsumer(ConverterService converterService) {
         this.converterService = converterService;
-    }
-
-    @Scheduled(fixedRate = pollInterval)
-    private void consumerWorks() {
         log.info("FahrenheitConsumer: consumerWorks on every: " + pollInterval);
         Properties properties = new Properties();
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -40,12 +36,18 @@ public class FahrenheitConsumer {
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
-        Consumer<String, String> kafkaConsumer = new KafkaConsumer<String, String>(properties);
+        consumer = new KafkaConsumer<>(properties);
         //TODO subs to Topics.CONVERSIONS_FAILED_TOPIC
         Collection<String> topics = List.of(Topics.CONVERSIONS_SUCCESSFUL_TOPIC);
-        kafkaConsumer.subscribe(topics);
+        consumer.subscribe(topics);
+    }
 
-        ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(pollInterval));
+
+    @Scheduled(fixedRate = pollInterval)
+    private void consumerWorks() {
+        log.info("FahrenheitConsumer: consumerWorks on every: " + pollInterval);
+
+        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(pollInterval));
         if (records.isEmpty()) {
             System.out.println("****\n FahrenheitConsumer: NOTHING TO POLL****");
         }
@@ -58,9 +60,12 @@ public class FahrenheitConsumer {
             //PERSIST RESULT
             saveResult(record.key(), record.value());
         }
+
+
     }
 
     private void saveResult(String uuid, String tempFahrenheit) {
+        System.out.println("\n UUID: " + uuid);
         List<Temperature> temperatureList = converterService.getTemperatureRepository().findByUuid(UUID.fromString(uuid));
         Temperature temperature = temperatureList.get(0);
         System.out.println("\nFound temp: " + temperature);
@@ -70,6 +75,5 @@ public class FahrenheitConsumer {
         System.out.println(savedTemp);
 
     }
-
 
 }
