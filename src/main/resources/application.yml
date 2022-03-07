@@ -1,0 +1,12 @@
+server:
+  port: 8585
+
+  # http://localhost:9001/actuator/health
+management:
+  server:
+    port: 9001
+    address: 127.0.0.1
+  endpoints:
+    web:
+      exposure:
+        include: "*"
